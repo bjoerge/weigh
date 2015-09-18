@@ -18,7 +18,7 @@ Weighing modules:
 
 Total weight, uncompressed: ~2.6 MB
 Total weight, uglified: 1.44 MB
-Total weight, gzipped (level: default) + uglified: ~348.31 kB
+Total weight, uglified+ gzipped (level: default): ~348.31 kB
 
 Note: these numbers are approximate.
 ```
