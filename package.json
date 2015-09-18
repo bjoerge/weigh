@@ -1,6 +1,6 @@
 {
   "name": "weigh",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Command line tool to check the weight (in bytes) of any browserifiable module",
   "main": "index.js",
   "scripts": {
