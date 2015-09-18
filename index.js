@@ -191,7 +191,7 @@ installPackages(pkgs, function (err, packages) {
 })
 
 function uglify() {
-  return SpawnStream(UGLIFY_BINARY, uglifyArgs || [
+  return SpawnStream(UGLIFY_BINARY, uglifyArgs.length ? uglifyArgs : [
       '--compress',
       '--mangle'
     ]);
