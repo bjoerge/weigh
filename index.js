@@ -4,6 +4,7 @@ var browserify = require('browserify');
 var SpawnStream = require('spawn-stream');
 var collapse = require('bundle-collapser/plugin');
 var exec = require('child_process').exec;
+var path = require('path');
 var async = require('async');
 var devnull = require('dev-null');
 var prettyBytes = require('pretty-bytes');
@@ -25,19 +26,20 @@ var argv = parseArgs(process.argv.slice(2), {
 })
 
 var gzipLevel = argv['gzip-level']
-var splittedArgs = splitArgv()
 
-var pkgs = splittedArgs[0]
+var pkgs = argv._.filter(function(arg) {
+  return arg.substring(0, 1) != '-'
+})
 
-var uglifyArgs = splittedArgs[1] || []
+var uglifyArgs = getUglifyArgs()
 
-function splitArgv() {
+function getUglifyArgs() {
   var argv2 = process.argv.slice(2)
   var subIdx = argv2.indexOf('--')
   if (subIdx === -1) {
-    return [argv2]
+    return []
   }
-  return [argv2.slice(0, subIdx), argv2.slice(subIdx + 1)]
+  return argv2.slice(subIdx + 1)
 }
 
 log()
@@ -63,6 +65,9 @@ function installPackages(pkgs, cb) {
   var toInstall = pkgs.map(function(pkg) {
     var splitted = splitPkg(pkg)
     if (isBuiltin(splitted[0])) {
+      return null
+    }
+    if (isRelative(splitted[0])) {
       return null
     }
     return splitted[0] + '@' + (splitted[1] || 'latest')
@@ -93,7 +98,13 @@ function getBytes(cb) {
 function isBuiltin(pkgName) {
   return BUILTINS.hasOwnProperty(pkgName)
 }
-function resolveModule(module) {
+function isPackage(pkgName) {
+  return !isRelative(pkgName)
+}
+function isRelative(pkgName) {
+  return pkgName[0] == '/' || pkgName[0] == '.'
+}
+function resolvePackage(module) {
   var pkgName = splitPkg(module)[0]
   if (isBuiltin(pkgName)) {
     return null
@@ -110,18 +121,43 @@ function resolveBuiltin(module) {
   return module
 }
 
+function resolveFile(module) {
+  return require.resolve(path.join(process.cwd(), module))
+}
+
+function getType(module) {
+  return isRelative(module) ? 'module' : isBuiltin(module) ? 'builtin' : 'package'
+}
+
 installPackages(pkgs, function (err, packages) {
   if (err) {
     throw err
   }
 
-  var resolved = pkgs.map(resolveModule).filter(Boolean)
-  var builtins = pkgs.map(resolveBuiltin).filter(Boolean)
+  var resolvedPkgs = pkgs.filter(isPackage).map(resolvePackage)
+  var resolvedFiles = pkgs.filter(isRelative).map(resolveFile)
+  var resolvedBuiltins = pkgs.filter(isBuiltin).map(resolveBuiltin)
 
-  var b = browserify(resolved)
+
+  log('Weighing modules: %s', pkgs.length ? '' : '0')
+
+  resolvedFiles.forEach(function(file) {
+    log('  [module]  %s', file)
+  })
+  resolvedBuiltins.forEach(function(builtin) {
+    log('  [builtin] %s', builtin)
+  })
+  packages.forEach(function(pkg) {
+    log('  [package] %s@%s', pkg.name, pkg.version)
+  })
+
+  log()
+
+
+  var b = browserify(resolvedPkgs.concat(resolvedFiles))
     .transform(envify({NODE_ENV: 'production'}))
 
-  builtins.forEach(function(builtin) {
+  resolvedBuiltins.forEach(function(builtin) {
     b.require(builtin)
   })
 
@@ -130,13 +166,6 @@ installPackages(pkgs, function (err, packages) {
   var uglifiedStr = bstream.pipe(uglify())
   var gzippedStream = bstream.pipe(zlib.createGzip({level: gzipLevel}))
   var uglifiedGzippedStream = uglifiedStr.pipe(zlib.createGzip({level: gzipLevel}))
-
-  log('Installed packages: %s', packages.length ? '' : '0')
-  packages.forEach(function(pkg) {
-    log('  %s@%s', pkg.name, pkg.version)
-  })
-
-  log()
 
   bstream.pipe(getBytes(function (bytes) {
     log("Total weight, uncompressed: ~%s", prettyBytes(bytes))
@@ -162,5 +191,8 @@ installPackages(pkgs, function (err, packages) {
 })
 
 function uglify() {
-  return SpawnStream(UGLIFY_BINARY, uglifyArgs);
+  return SpawnStream(UGLIFY_BINARY, uglifyArgs || [
+      '--compress',
+      '--mangle'
+    ]);
 }

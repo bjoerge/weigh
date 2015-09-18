@@ -1,7 +1,7 @@
 {
   "name": "weigh",
   "version": "0.0.1",
-  "description": "Command line tool to check the byte weight of any npm module",
+  "description": "Command line tool to check the weight (in bytes) of any browserifiable module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
