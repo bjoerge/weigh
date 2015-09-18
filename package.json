@@ -1,6 +1,6 @@
 {
   "name": "weigh",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Command line tool to check the weight (in bytes) of any browserifiable module",
   "main": "index.js",
   "scripts": {
@@ -15,8 +15,7 @@
   },
   "author": "Bjørge Næss",
   "license": "MIT",
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "dependencies": {
     "async": "^1.4.2",
     "browserify": "^11.1.0",
