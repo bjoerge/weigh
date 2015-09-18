@@ -11,14 +11,14 @@ Outputs:
 Calculating size of react, ./index.js, fs, crypto
 
 Weighing modules:
-  [module]  ~/code/weigh/index.js
+  [module]  /Users/bjoerge/code/_/weigh/index.js
   [builtin] fs
   [builtin] crypto
   [package] react@0.13.3
 
 Total weight, uncompressed: ~2.6 MB
-Total weight, uglified: 1.44 MB
-Total weight, uglified+ gzipped (level: default): ~348.31 kB
+Total weight, uglified: 950.69 kB
+Total weight, uglified + gzipped (level: default): ~282.33 kB
 
 Note: these numbers are approximate.
 ```
