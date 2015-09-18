@@ -176,7 +176,7 @@ installPackages(pkgs, function (err, packages) {
   }))
 
   uglifiedGzippedStream.pipe(getBytes(function (bytes) {
-    log("Total weight, uglified + gzipped (level: %s) ~%s:", gzipLevel == undefined ? 'default' : gzipLevel, prettyBytes(bytes))
+    log("Total weight, uglified + gzipped (level: %s): ~%s", gzipLevel == undefined ? 'default' : gzipLevel, prettyBytes(bytes))
     log()
     log("Note: these numbers are approximate.")
   }))
