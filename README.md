@@ -11,7 +11,7 @@ Outputs:
 Calculating size of react, ./index.js, fs, crypto
 
 Weighing modules:
-  [module]  /Users/bjoerge/code/_/weigh/index.js
+  [module]  ~/code/weigh/index.js
   [builtin] fs
   [builtin] crypto
   [package] react@0.13.3
