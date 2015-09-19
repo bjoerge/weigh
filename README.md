@@ -23,12 +23,13 @@ Note: these numbers are approximate.
 npm i -g weigh
 ````
 
+## Usage
 
 ```
 Usage: weigh module[@version] [module[@version] ...]
 
   Options:
-
+    --help                 Show this usage information
     --gzip-level, -g       Gzip compression level
 
 
