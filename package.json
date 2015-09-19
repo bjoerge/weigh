@@ -4,7 +4,7 @@
   "description": "Command line tool to check the weight (in bytes) of any browserifiable module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "standard ."
   },
   "bin": {
     "weigh": "index.js"
@@ -15,18 +15,17 @@
   },
   "author": "Bjørge Næss",
   "license": "MIT",
-  "devDependencies": {},
+  "devDependencies": {
+    "standard": "^5.3.1"
+  },
   "dependencies": {
-    "async": "^1.4.2",
     "browserify": "^11.1.0",
-    "bundle-collapser": "^1.2.1",
     "dev-null": "^0.1.1",
     "envify": "^3.4.0",
     "minimist": "^1.2.0",
     "pretty-bytes": "^2.0.1",
     "resolve-from": "^1.0.0",
     "spawn-stream": "^1.0.2",
-    "subarg": "^1.0.0",
     "through": "^2.3.8",
     "uglify-js": "^2.4.24"
   }

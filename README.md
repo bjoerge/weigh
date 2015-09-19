@@ -4,21 +4,15 @@ Command line tool to check the weight (in bytes) of any browserifiable module
 
 ## Example:
 ```
-$ weigh react ./index.js fs crypto
+$ weigh react
 ```
 Outputs:
 ```
-Calculating size of react, ./index.js, fs, crypto
+Calculating size of react
 
-Weighing modules:
-  [module]  /Users/bjoerge/code/_/weigh/index.js
-  [builtin] fs
-  [builtin] crypto
-  [package] react@0.13.3
-
-Total weight, uncompressed: ~2.6 MB
-Total weight, uglified: 950.69 kB
-Total weight, uglified + gzipped (level: default): ~282.33 kB
+Uncompressed: ~615.67 kB
+Uglified: 143.45 kB
+Uglified + gzipped (level: default): ~39.26 kB
 
 Note: these numbers are approximate.
 ```
@@ -31,7 +25,7 @@ npm i -g weigh
 
 
 ```
-Usage: weigh module[@version]
+Usage: weigh module[@version] [module[@version] ...]
 
   Options:
 
