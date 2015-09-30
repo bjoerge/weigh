@@ -12,6 +12,7 @@ var fs = require('fs')
 var resolveFrom = require('resolve-from')
 var through = require('through')
 var parseArgs = require('minimist')
+var pkgName = require('require-package-name')
 
 var BUILTINS = require('browserify/lib/builtins')
 var MODULE_CACHE_PATH = __dirname + '/.cached_modules'
@@ -74,7 +75,7 @@ function installPackages (pkgs, cb) {
     if (isRelative(splitted[0])) {
       return null
     }
-    return splitted[0] + '@' + (splitted[1] || 'latest')
+    return pkgName(splitted[0]) + '@' + (splitted[1] || 'latest')
   }).filter(Boolean)
 
   if (toInstall.length === 0) {
