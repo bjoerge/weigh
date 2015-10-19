@@ -86,8 +86,29 @@ function installPackages (pkgs, cb) {
     if (err) {
       return cb(err)
     }
-    cb(null, JSON.parse(stdout))
+    cb(null, packagesToArray(JSON.parse(stdout)))
   })
+}
+
+function mapPackages(deps, key){
+  return {
+    name: key,
+    version: deps[key].version
+  }
+}
+
+function packagesToArray (packages) {
+  if (Array.isArray(packages)) {
+    return packages
+  }
+
+  if (packages.dependencies) {
+    return Object
+      .keys(packages.dependencies)
+      .map(mapPackages.bind(null, packages.dependencies))
+  }
+
+  return [];
 }
 
 function getBytes (cb) {
