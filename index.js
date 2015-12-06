@@ -86,6 +86,10 @@ function installPackages (pkgs, cb) {
     if (err) {
       return cb(err)
     }
+    // Sometimes, npm gives lines that aren't JSON, so strip those out.
+    stdout = stdout.split('\n').filter(function (line) {
+      return line.substring(0, 2) !== '> ';
+    }).join('\n');
     cb(null, packagesToArray(JSON.parse(stdout)))
   })
 }
