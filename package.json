@@ -4,7 +4,7 @@
   "description": "Command line tool to check the weight (in bytes) of any browserifiable module",
   "main": "index.js",
   "scripts": {
-    "test": "standard ."
+    "test": "standard --verbose | snazzy"
   },
   "bin": {
     "weigh": "index.js"
@@ -16,6 +16,7 @@
   "author": "Bjørge Næss",
   "license": "MIT",
   "devDependencies": {
+    "snazzy": "^2.0.1",
     "standard": "^5.3.1"
   },
   "dependencies": {
