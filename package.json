@@ -4,7 +4,7 @@
   "description": "Command line tool to check the weight (in bytes) of any browserifiable module",
   "main": "index.js",
   "scripts": {
-    "test": "tap test.js && standard --verbose | snazzy"
+    "test": "mocha test.js --timeout 300000 --bail --slow 0 && standard --verbose | snazzy"
   },
   "bin": {
     "weigh": "index.js"
@@ -16,9 +16,10 @@
   "author": "Bjørge Næss",
   "license": "MIT",
   "devDependencies": {
+    "chai": "^3.4.1",
+    "mocha": "^2.3.4",
     "snazzy": "^2.0.1",
-    "standard": "^5.3.1",
-    "tap": "^2.3.1"
+    "standard": "^5.3.1"
   },
   "dependencies": {
     "browserify": "^11.1.0",

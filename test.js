@@ -1,87 +1,54 @@
-var test = require('tap').test
+/* globals it describe */
+
+var expect = require('expect')
 var exec = require('child_process').exec
 
-var labels = {
-  prelude: function (modules) {
-    return 'Calculating size of ' + modules
-  },
-  weighHeader: 'Weighing modules: ',
-  postlude: 'Note: these numbers are approximate.',
-  matchPackage: function matchPackage (pkgName) {
-    return new RegExp('  \\[package\\] ' + pkgName + '@\\d+.\\d+.\\d+')
-  },
-  matchSummary: function matchSummary (gzipLevel) {
-    return [
-      /Uncompressed: ~(.+)/,
-      /Uglified: (.+)/,
-      new RegExp('Uglified \\+ gzipped \\(level: ' + gzipLevel + '\\): ~(.+)')
-    ]
-  }
+function matchOutput (options) {
+  var nl = '\n'
+  return new RegExp(
+    nl +
+    'Calculating size of ' + options.packages.join(', ') +
+    nl +
+    nl +
+    'Weighing modules: ' +
+    nl +
+    options.packages.slice()
+      .sort()
+      .map(function (pkgName) {
+        return '  \\[package\\] ' + pkgName + '@\\d+.\\d+.\\d+'
+      }).join(nl) +
+    nl +
+    nl +
+    'Uncompressed: ~(.+)' +
+    nl +
+    'Uglified: (.+)' +
+    nl +
+    'Uglified \\+ gzipped \\(level: ' + (options.gzipLevel || 'default') + '\\): ~(.+)' +
+    nl +
+    nl +
+    'Note: these numbers are approximate.' +
+    nl
+    , 'm')
 }
 
 var expectations = [
-  ['react', [
-    '',
-    labels.prelude('react'),
-    '',
-    labels.weighHeader,
-    labels.matchPackage('react'),
-    '',
-    labels.matchSummary('default'),
-    '',
-    labels.postlude
-  ]],
-  ['lodash -g 9', [
-    '',
-    labels.prelude('lodash'),
-    '',
-    labels.weighHeader,
-    labels.matchPackage('lodash'),
-    '',
-    labels.matchSummary('9'),
-    '',
-    labels.postlude
-  ]],
-  ['lodash react history', [
-    '',
-    labels.prelude('lodash, react, history'),
-    '',
-    labels.weighHeader,
-
-    // note: these are sorted alphabetically when returned from npm ls
-    labels.matchPackage('history'),
-    labels.matchPackage('lodash'),
-    labels.matchPackage('react'),
-    '',
-    labels.matchSummary('default'),
-    '',
-    labels.postlude
-  ]]
+  ['react', matchOutput({packages: ['react']})],
+  ['lodash --gzip-level 9', matchOutput({packages: ['lodash'], gzipLevel: 9})],
+  ['lodash react history', matchOutput({packages: ['history', 'lodash', 'react'], gzipLevel: 9})]
 ]
 
 expectations.forEach(function (expectation) {
   var args = expectation[0]
-  var expectedLines = flatten(expectation[1])
+  var expected = expectation[1]
 
-  test('weigh ' + args, function (t) {
-    exec(require.resolve('./index.js') + ' ' + args, function (error, stdout, stderr) {
-      t.notOk(error, 'Expected no error, instead got ' + error)
-      t.notOk(stderr, 'Expected empty stderr')
-      var stdoutLines = stdout.split('\n')
-      expectedLines.forEach(function (expectedLine, i) {
-        var stdoutLine = stdoutLines[i]
-        if (expectedLine instanceof RegExp) {
-          return t.match(stdoutLine, expectedLine)
-        }
-        t.equal(expectedLine, stdoutLine)
+  describe('> weigh ' + args, function () {
+    it('works', function (done) {
+      exec(require.resolve('./index.js') + ' ' + args, function (error, stdout, stderr) {
+        expect(error).toNotExist('Expected no error, instead got ' + error)
+        expect(stderr).toNotExist('Expected empty stderr')
+        expect(stdout).toMatch(expected)
+        done()
       })
-      t.end()
     })
   })
 })
-
-function flatten (arr) {
-  return arr.reduce(function (flattened, item) {
-    return flattened.concat(item)
-  }, [])
-}
