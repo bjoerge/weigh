@@ -1,4 +1,4 @@
-# Weigh
+# Weigh [![Build Status](https://travis-ci.org/bjoerge/weigh.svg)](https://travis-ci.org/bjoerge/weigh)
 
 Command line tool to check the approximate weight (in bytes) of any npm module that works in the browser
 
