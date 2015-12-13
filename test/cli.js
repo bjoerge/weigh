@@ -21,9 +21,9 @@ var expectations = [
   ['Builtins', 'url'],
   ['Local file', '../parse-package.js'],
   ['Package relative module', 'lodash/collection/map'],
-  ['Scoped package', '@bengler/pebbles-uid'],
-  ['Scoped package with version specifier', '@bengler/pebbles-uid@latest'],
-  ['Scoped package with version specifier *and* relative path', '@bengler/pebbles-uid@1.0.6/prop.js'],
+  ['Scoped package', '@bjoerge/npm-private-test'],
+  ['Scoped package with version specifier', '@bjoerge/npm-private-test@latest'],
+  ['Scoped package with version specifier *and* relative path', '@bjoerge/npm-private-test@0.0.2/some/thing.js'],
   [
     'Combination of regular package, local file, builtin, and package relative module',
     'async ../parse-package.js path lodash/collection/shuffle'
