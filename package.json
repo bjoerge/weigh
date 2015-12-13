@@ -2,12 +2,12 @@
   "name": "weigh",
   "version": "1.1.2",
   "description": "Command line tool to check the weight (in bytes) of any browserifiable module",
-  "main": "index.js",
+  "main": "./bin/cli.js",
   "scripts": {
-    "test": "mocha test.js --timeout 300000 --bail --slow 0 && standard --verbose | snazzy"
+    "test": "mocha test && standard --verbose | snazzy"
   },
   "bin": {
-    "weigh": "index.js"
+    "weigh": "./bin/cli.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,7 @@
   "license": "MIT",
   "devDependencies": {
     "chai": "^3.4.1",
+    "expect": "^1.13.2",
     "mocha": "^2.3.4",
     "snazzy": "^2.0.1",
     "standard": "^5.3.1"
@@ -25,12 +26,14 @@
     "browserify": "^11.1.0",
     "dev-null": "^0.1.1",
     "envify": "^3.4.0",
+    "humanize-list": "^1.0.0",
     "minimist": "^1.2.0",
     "pretty-bytes": "^2.0.1",
     "require-package-name": "^2.0.1",
     "resolve-from": "^1.0.0",
     "spawn-stream": "^1.0.2",
     "through": "^2.3.8",
-    "uglify-js": "^2.4.24"
+    "uglify-js": "^2.4.24",
+    "xtend": "^4.0.1"
   }
 }

@@ -1,9 +1,9 @@
-Usage: weigh module[@version] [module[@version] ...]
+Usage: weigh [@scope/]module[@version][/package/relative/module.js] [@scope/]module[@version][/package/relative/module.js ...]
 
   Options:
     --help                 Show this usage information
     --gzip-level, -g       Gzip compression level
-
+    --verbose, -v          Do a little more logging along the way
 
   The special option -- can be used to pass on the arguments after the -- to uglify-js, e.g.
 
