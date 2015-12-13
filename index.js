@@ -90,7 +90,7 @@ function installPackages (pkgs, cb) {
   })
 }
 
-function mapPackages(deps, key){
+function mapPackages (deps, key) {
   return {
     name: key,
     version: deps[key].version
@@ -108,7 +108,7 @@ function packagesToArray (packages) {
       .map(mapPackages.bind(null, packages.dependencies))
   }
 
-  return [];
+  return []
 }
 
 function getBytes (cb) {
@@ -196,7 +196,7 @@ installPackages(pkgs, function (err, packages) {
   }))
 
   uglifiedGzippedStream.pipe(getBytes(function (bytes) {
-    log('Uglified + gzipped (level: %s): ~%s', gzipLevel ? gzipLevel : 'default', prettyBytes(bytes))
+    log('Uglified + gzipped (level: %s): ~%s', gzipLevel || 'default', prettyBytes(bytes))
     log()
     log('Note: these numbers are approximate.')
   }))
