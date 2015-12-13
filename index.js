@@ -82,14 +82,10 @@ function installPackages (pkgs, cb) {
     return cb(null, [])
   }
 
-  exec('npm install --json --prefix ' + MODULE_CACHE_PATH + ' ' + toInstall.join(' '), function (err, stdout) {
+  exec('npm install --silent --json --prefix ' + MODULE_CACHE_PATH + ' ' + toInstall.join(' '), function (err, stdout) {
     if (err) {
       return cb(err)
     }
-    // Sometimes, npm gives lines that aren't JSON, so strip those out.
-    stdout = stdout.split('\n').filter(function (line) {
-      return line.substring(0, 2) !== '> ';
-    }).join('\n');
     cb(null, packagesToArray(JSON.parse(stdout)))
   })
 }
