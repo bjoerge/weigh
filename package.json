@@ -1,7 +1,7 @@
 {
   "name": "weigh",
   "version": "2.0.0",
-  "description": "Command line tool to check the weight (in bytes) of any browserifiable module",
+  "description": "A command line tool to check the weight (in bytes) of any browser compatible module",
   "main": "./bin/cli.js",
   "scripts": {
     "test": "mocha test && standard --verbose | snazzy"
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "github.com/bjoerge/weigh"
+    "url": "https://github.com/bjoerge/weigh"
   },
   "author": "Bjørge Næss",
   "license": "MIT",

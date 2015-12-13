@@ -1,6 +1,6 @@
 # Weigh [![Build Status](https://travis-ci.org/bjoerge/weigh.svg)](https://travis-ci.org/bjoerge/weigh)
 
-Command line tool to check the approximate weight (in bytes) of any npm module that works in the browser
+A command line tool to check the approximate weight (in bytes) of any npm module that works in the browser
 
 ## Install
 
@@ -11,7 +11,7 @@ npm i -g weigh
 ## Usage
 
 ```
-Usage: weigh [@scope/]module[@version][/package/relative/module.js] [@scope/]module[@version][/package/relative/module.js ...]
+Usage: weigh [@scope/]module[@version][/module.js] [@scope/]module[@version][/module.js ...]
 
   Options:
     --help                 Show this usage information
@@ -25,11 +25,11 @@ Usage: weigh [@scope/]module[@version][/package/relative/module.js] [@scope/]mod
 
 ## Example:
 ```
-$ weigh lodash@latest
+$ weigh lodash
 ```
 Outputs:
 ```
-Downloading lodash@latest, this may take a little while…
+Downloading lodash, this may take a little while…
 Downloaded 1 package(s)
 
 Weighing lodash…
