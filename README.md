@@ -65,8 +65,8 @@ Uglified + gzipped (level: default): 42.7 kB
 ### Some more examples of supported module formats
 
 - `weigh lodash`
-- `weigh lodash/collections/map.js`
-- `weigh lodash@latest/collections/map.js`
+- `weigh lodash/collection/map`
+- `weigh lodash@latest/collection/map`
 - `weigh @myorg/mypkg`
 - `weigh @myorg/mypkg@latest`
 - `weigh @myorg/mypkg/foo/bar.js`
