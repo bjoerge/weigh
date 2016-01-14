@@ -77,7 +77,7 @@ Uglified + gzipped (level: default): 42.7 kB
 - `weigh .` (module in cwd)
 
 ## Todo (maybe?)
-- Allow outputting the built bundle for piping to e.g. [hughsk/disc](discify)
+- Allow outputting the built bundle for piping to e.g. [hughsk/disc](https://github.com/hughsk/disc)
 
 # License
 
