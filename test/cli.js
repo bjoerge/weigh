@@ -20,13 +20,13 @@ var expectations = [
   ['Specifying gzip level', 'lodash', 9],
   ['Builtins', 'url'],
   ['Local file', '../parse-package.js'],
-  ['Package relative module', 'lodash/collection/map'],
+  ['Package relative module', 'lodash/map'],
   ['Scoped package', '@bjoerge/npm-private-test'],
   ['Scoped package with version specifier', '@bjoerge/npm-private-test@latest'],
   ['Scoped package with version specifier *and* relative path', '@bjoerge/npm-private-test@0.0.2/some/thing.js'],
   [
     'Combination of regular package, local file, builtin, and package relative module',
-    'async ../parse-package.js path lodash/collection/shuffle'
+    'async ../parse-package.js path lodash/shuffle'
   ]
 ]
 
