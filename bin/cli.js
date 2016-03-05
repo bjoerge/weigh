@@ -101,7 +101,7 @@ function verbose (args) {
 }
 
 function help () {
-  return fs.readFileSync(__dirname + '/usage.txt', 'utf-8')
+  return fs.readFileSync(path.join(__dirname, '/usage.txt'), 'utf-8')
 }
 
 function installPackages (pkgs, cb) {
