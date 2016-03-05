@@ -38,8 +38,8 @@ Weighing lodash…
 
 Approximate weight of lodash:
   Uncompressed: ~412.11 kB
-  Uglified: 51.61 kB
-  Uglified + gzipped (level: default): ~18.82 kB
+  Minified (uglify): 51.61 kB
+  Minified and gzipped (level: default): ~18.82 kB
 ```
 
 Note: `weigh` uses browserify under the hood to bundle the module, and adds envify as a global
@@ -51,8 +51,8 @@ For example compare:
 ```
 $ weigh react
 Uncompressed: 666.1 kB
-Uglified: 212.63 kB
-Uglified + gzipped (level: default): 58.13 kB
+Minified (uglify): 212.63 kB
+Minified and gzipped (level: default): 58.13 kB
 ```
 
 ...with:
@@ -60,8 +60,8 @@ Uglified + gzipped (level: default): 58.13 kB
 ```
 $ NODE_ENV=production weigh react
 Uncompressed: 657.2 kB
-Uglified: 158.36 kB
-Uglified + gzipped (level: default): 42.7 kB
+Minified (uglify): 158.36 kB
+Minified and gzipped (level: default): 42.7 kB
 ```
 
 ### Some more examples of supported module formats
