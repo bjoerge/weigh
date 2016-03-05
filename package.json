@@ -4,7 +4,9 @@
   "description": "A command line tool to check the weight (in bytes) of any browser compatible module",
   "main": "./bin/cli.js",
   "scripts": {
-    "test": "mocha test && standard --verbose | snazzy"
+    "mocha": "mocha test",
+    "lint": "standard --verbose | snazzy",
+    "test": "npm run test && npm run lint"
   },
   "bin": {
     "weigh": "./bin/cli.js"
