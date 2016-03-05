@@ -6,7 +6,7 @@
   "scripts": {
     "mocha": "mocha test",
     "lint": "standard --verbose | snazzy",
-    "test": "npm run test && npm run lint"
+    "test": "npm run mocha && npm run lint"
   },
   "bin": {
     "weigh": "./bin/cli.js"
