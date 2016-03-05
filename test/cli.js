@@ -32,7 +32,6 @@ var expectations = [
 
 ;['closure', 'uglify'].forEach(function (minifier) {
   describe('Using' + minifier + ' to minify', function () {
-
     expectations.forEach(function (expectation) {
       var desc = expectation[0]
       var args = expectation[1]
