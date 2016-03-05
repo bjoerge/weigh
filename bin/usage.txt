@@ -1,10 +1,25 @@
 Usage: weigh [@scope/]module[@version][/package/relative/module.js] [@scope/]module[@version][/package/relative/module.js ...]
 
   Options:
-    --help                 Show this usage information
-    --gzip-level, -g       Gzip compression level
-    --verbose, -v          Do a little more logging along the way
+    --help, -h          Show this usage information
+    --minifier, -m      Specify which JavaScript minifier to use. Can be either `uglify` for UglifyJS (default) or
+                        `closure` for Closure Compiler.
+    --verbose, -v       Do a little more logging along the way
+    --clean             Remove local node_modules cache before installing
+    --gzip-level, -g    Gzip compression level
+    --no-minify         Don't minify
+    --no-gzip           Don't gzip
+    --uncompressed, -u  Shorthand for --no-minify --no-gzip
 
-  The special option -- can be used to pass on the arguments after the -- to uglify-js, e.g.
-
-    weigh request -- --mangle --screw-ie-8 --comments
+    Examples:
+      weigh lodash
+      weigh lodash/collection/map
+      weigh lodash@latest/collection/map
+      weigh @myorg/mypkg
+      weigh @myorg/mypkg@latest
+      weigh @myorg/mypkg/foo/bar.js
+      weigh @myorg/mypkg@latest/foo/bar.js
+      weigh @myorg/mypkg@2.1.4/foo/bar.js
+      weigh ./path/to/foo/bar.js
+      weigh /absolute/path/to/foo/bar.js
+      weigh . (module in cwd)

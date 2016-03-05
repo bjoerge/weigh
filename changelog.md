@@ -1,8 +1,25 @@
+## 3.0.0
+
+:sparkles: Closure compiler support! You can now minify using closure compiler by passing option `--minifier closure`
+
+* Removed the possibility to pass subargs to UglifyJS. As a consequence, this is no longer possible: `weigh request -- --mangle --screw-ie-8 --comments`
+* Better error reporting when weighing a package with peer dependencies
+* New options:
+    - `--minifier, -m` Specify which JavaScript minifier to use. Can be either `uglify` for UglifyJS (default) or `closure` for Closure Compiler.
+    - `--clean` Remove local node_modules cache before installing
+    - `--no-minify` Don't minify
+    - `--no-gzip` Don't gzip
+    - `--uncompressed, -u`  Shorthand for --no-minify --no-gzip
+* Updated dependencies:
+  - browserify: 13.0.0
+  - uglify-js: 2.6.2
+  - ++
+
 ## 2.0.0
 * TESTS OMG!
 * Envify is now passed as a global transform so it will respect process.env.NODE_ENV
 * Added --verbose flag
-* Use `npm ls --json` to get the list of installed modules instead of undocumented/unsupported `npm install --json ...` 
+* Use `npm ls --json` to get the list of installed modules instead of undocumented/unsupported `npm install --json ...`
 * Misc. output improvements
 * Improved support for different package formats (e.g. you can now do `weigh @myorg/mypkg@2.1.4/foo/bar.js`)
 * Misc code cleanup
