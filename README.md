@@ -11,16 +11,18 @@ npm i -g weigh
 ## Usage
 
 ```
-Usage: weigh [@scope/]module[@version][/module.js] [@scope/]module[@version][/module.js ...]
+Usage: weigh [@scope/]module[@version][/package/relative/module.js] [@scope/]module[@version][/package/relative/module.js ...]
 
   Options:
-    --help                 Show this usage information
-    --gzip-level, -g       Gzip compression level
-    --verbose, -v          Do a little more logging along the way
-
-  The special option -- can be used to pass on the arguments after the -- to uglify-js, e.g.
-
-    weigh request -- --mangle --screw-ie-8 --comments
+    --help, -h          Show this usage information
+    --minifier, -m      Specify which JavaScript minifier to use. Can be either `uglify` for UglifyJS (default) or
+                        `closure` for Closure Compiler.
+    --verbose, -v       Do a little more logging along the way
+    --clean             Remove local node_modules cache before installing
+    --gzip-level, -g    Gzip compression level
+    --no-minify         Don't minify
+    --no-gzip           Don't gzip
+    --uncompressed, -u  Shorthand for --no-minify --no-gzip
 ```
 
 ## Example:

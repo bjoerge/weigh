@@ -3,14 +3,14 @@
 var expect = require('expect')
 var exec = require('child_process').exec
 
-function createOutputRegex () {
+function createOutputRegex (minifier) {
   return new RegExp(
     'Weighing (.+)…\n' +
     '\n' +
     'Approximate weight of (.+):\n' +
     '  Uncompressed: (.+)\n' +
-    '  Uglified: (.+)\n' +
-    '  Uglified \\+ gzipped \\(level: (.+)\\): (.+)'
+    '  Minified \\(' + minifier + '\\): (.+)\n' +
+    '  Minified and gzipped \\(level: (.+)\\): (.+)'
   )
 }
 
@@ -30,25 +30,32 @@ var expectations = [
   ]
 ]
 
-expectations.forEach(function (expectation) {
-  var desc = expectation[0]
-  var args = expectation[1]
+;['closure', 'uglify'].forEach(function (minifier) {
+  describe('Using' + minifier + ' to minify', function () {
 
-  var gzipLevel = expectation[2]
+    expectations.forEach(function (expectation) {
+      var desc = expectation[0]
+      var args = expectation[1]
 
-  var cmd = args + (gzipLevel ? ' --gzip-level ' + gzipLevel : '')
+      var gzipLevel = expectation[2]
 
-  var expectedOutput = createOutputRegex()
+      var cmd = args +
+        (gzipLevel ? ' --gzip-level ' + gzipLevel : '') +
+        ' --minifier ' + minifier
 
-  describe(desc, function () {
-    this.timeout(1000 * 60 * 10)
-    this.slow(1000 * 60 * 10)
-    it('weigh ' + cmd, function (done) {
-      exec(require.resolve('../bin/cli.js') + ' ' + cmd, function (error, stdout, stderr) {
-        expect(error).toNotExist('Expected no error, instead got ' + error)
-        expect(stderr).toNotExist('Expected empty stderr')
-        expect(stdout).toMatch(expectedOutput)
-        done()
+      var expectedOutput = createOutputRegex(minifier)
+
+      describe(desc, function () {
+        this.timeout(1000 * 60 * 10)
+        this.slow(1000 * 60 * 10)
+        it('weigh ' + cmd, function (done) {
+          exec(require.resolve('../bin/cli.js') + ' ' + cmd, function (error, stdout, stderr) {
+            expect(error).toNotExist('Expected no error, instead got ' + error)
+            expect(stderr).toNotExist('Expected empty stderr')
+            expect(stdout).toMatch(expectedOutput)
+            done()
+          })
+        })
       })
     })
   })
