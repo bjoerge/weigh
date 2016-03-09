@@ -161,7 +161,7 @@ function installPackages (pkgs, cb) {
       return cb(err)
     }
 
-    var lsCmd = 'npm ls --json --prefix ' + MODULE_CACHE_PATH + ' ' + installArgs
+    var lsCmd = 'npm ls --json --prefix ' + MODULE_CACHE_PATH
     verbose('> %s', lsCmd)
     exec(lsCmd, function (err, stdout) {
       var result
@@ -172,7 +172,7 @@ function installPackages (pkgs, cb) {
       }
       if (err) {
         // Check if there are missing peer deps
-        if (!result) {
+        if (!result || !result.dependencies) {
           cb(err)
           return
         }
