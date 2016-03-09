@@ -31,6 +31,7 @@ var argv = parseArgs(process.argv.slice(2), {
     'gzip-level'
   ],
   boolean: [
+    'version',
     'help',
     'minify',
     'gzip',
@@ -54,17 +55,23 @@ var argv = parseArgs(process.argv.slice(2), {
   unknown: function (arg) {
     if (arg[0] === '-') {
       console.error('Error: Unknown command line option: `%s`. ', arg)
-      console.log()
-      console.log(help())
+      log()
+      log(help())
       process.exit(1)
     }
   }
 })
 
 if (argv.help) {
-  console.log(help())
+  log(help())
   process.exit(0)
 }
+
+if (argv.version) {
+  log(require('../package').version)
+  process.exit(0)
+}
+
 if (argv.clean) {
   rimraf.sync(MODULE_CACHE_PATH)
   log('Local node_modules cache cleared.')
@@ -86,7 +93,8 @@ var packages = argv._
   .map(parsePackage)
 
 if (packages.length === 0) {
-  log('No packages specified. Exiting.')
+  log('Error: No packages specified.')
+  log(help())
   process.exit(0)
 }
 
