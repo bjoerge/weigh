@@ -1,3 +1,6 @@
+## 3.1.0
+- Add --version flag and show help when no packages are specified
+
 ## 3.0.0
 
 :sparkles: Closure compiler support! You can now minify using closure compiler by passing option `--minifier closure`
