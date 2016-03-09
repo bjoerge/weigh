@@ -5,8 +5,6 @@ var exec = require('child_process').exec
 
 function createOutputRegex (minifier) {
   return new RegExp(
-    'Weighing (.+)…\n' +
-    '\n' +
     'Approximate weight of (.+):\n' +
     '  Uncompressed: (.+)\n' +
     '  Minified \\(' + minifier + '\\): (.+)\n' +

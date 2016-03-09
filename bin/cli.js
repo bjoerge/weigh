@@ -15,6 +15,9 @@ var parseArgs = require('minimist')
 var xtend = require('xtend')
 var rimraf = require('rimraf')
 var tempfile = require('tempfile')
+var format = require('util').format
+var ora = require('ora')
+var uniq = require('uniq')
 
 var parsePackage = require('../parse-package')
 var formatPackage = require('../format-package')
@@ -24,6 +27,42 @@ var SUPPORTED_MINIFIERS = ['closure', 'uglify']
 var MODULE_CACHE_PATH = path.join(__dirname, '..', '.cached_modules')
 
 var uglify = require('uglify-js')
+
+function createLogger () {
+  var spinning = false
+  var spinner = ora()
+  return {
+    progress: progress,
+    log: log,
+    stopSpinner: stopSpinner
+  }
+  function log () {
+    if (spinning) {
+      spinner.stop()
+    }
+    console.log(format.apply(null, arguments))
+    if (spinning) {
+      spinner.start()
+    }
+  }
+  function progress () {
+    if (!spinning) {
+      startSpinner()
+    }
+    spinner.text = format.apply(null, arguments)
+  }
+  function startSpinner () {
+    spinner.start()
+    spinning = true
+  }
+  function stopSpinner () {
+    spinner.clear()
+    spinner.stop()
+    spinning = false
+  }
+}
+
+var logger = createLogger()
 
 var argv = parseArgs(process.argv.slice(2), {
   string: [
@@ -55,26 +94,26 @@ var argv = parseArgs(process.argv.slice(2), {
   unknown: function (arg) {
     if (arg[0] === '-') {
       console.error('Error: Unknown command line option: `%s`. ', arg)
-      log()
-      log(help())
+      logger.log()
+      logger.log(help())
       process.exit(1)
     }
   }
 })
 
 if (argv.help) {
-  log(help())
+  logger.log(help())
   process.exit(0)
 }
 
 if (argv.version) {
-  log(require('../package').version)
+  logger.log(require('../package').version)
   process.exit(0)
 }
 
 if (argv.clean) {
   rimraf.sync(MODULE_CACHE_PATH)
-  log('Local node_modules cache cleared.')
+  logger.log('Local node_modules cache cleared.')
 }
 
 var gzipLevel = argv['gzip-level']
@@ -93,18 +132,14 @@ var packages = argv._
   .map(parsePackage)
 
 if (packages.length === 0) {
-  log('Error: No packages specified.')
-  log(help())
+  logger.log('Error: No packages specified.')
+  logger.log(help())
   process.exit(0)
-}
-
-function log (args) {
-  console.log.apply(console, arguments)
 }
 
 function verbose (args) {
   if (argv.verbose) {
-    console.log.apply(console, arguments)
+    logger.log.apply(null, arguments)
   }
 }
 
@@ -123,7 +158,7 @@ function installPackages (pkgs, cb) {
 
   var installArgs = needsInstall.map(formatPackage(true)).join(' ')
 
-  log('Downloading %s, this may take a little while…', humanize(needsInstall.map(formatPackage(true))))
+  logger.progress('Downloading %s, this may take a little while…', humanize(needsInstall.map(formatPackage(true))))
 
   var installCmd = 'npm install --prefix ' + MODULE_CACHE_PATH + ' ' + installArgs
   verbose('> %s', installCmd)
@@ -143,27 +178,47 @@ function installPackages (pkgs, cb) {
       }
       if (err) {
         // Check if there are missing peer deps
-        if (result) {
-          var missingPeers = flatten(Object.keys(result.dependencies)
-            .map(function (depName) {
-              var dep = result.dependencies[depName]
-              if (dep.peerMissing && dep.required) {
-                return dep.required.peerMissing
-              }
-            })
-            .filter(Boolean))
-          var message = ['Found missing peer dependencies while installing packages:']
-          missingPeers.map(function (missing) {
-            message.push('\t ' + missing.requires + ', required by ' + missing.requiredBy)
+        if (!result) {
+          cb(err)
+          return
+        }
+        var missingPeers = flatten(Object.keys(result.dependencies)
+          .map(function (depName) {
+            var dep = result.dependencies[depName]
+            if (dep.peerMissing && dep.required) {
+              return dep.required.peerMissing
+            }
           })
-          message.push('You can try weighing with ' + humanize(missingPeers.map(function (dep) {
-            return dep.requires
+          .filter(Boolean))
+        var message = ['Warning: Found missing peer dependencies while downloading packages:']
+        missingPeers.map(function (missing) {
+          message.push('  ' + missing.requires + ', required by ' + missing.requiredBy)
+        })
+
+        var requiredBys = missingPeers.map(function (missing) {
+          return missing.requiredBy
+        })
+
+        message.push('')
+        message.push(
+          'This means that ' + humanize(requiredBys) + ' will going to need additional modules to work. ' +
+          'Peer dependencies are not installed by weigh'
+        )
+        message.push('')
+        message.push('If you want to check the weight with these peer dependencies included, just add ')
+        message.push('them to the weigh command like this:')
+
+        var suggestedArgs = []
+          .concat(process.argv.slice(2).sort())
+          .concat(uniq(missingPeers.map(function (missing) {
+            return parsePackage(missing.requires).name
           })))
 
-          cb(new Error(message.join('\n')))
-        } else {
-          return cb(err)
-        }
+        message.push('weigh ' + suggestedArgs.join(' '))
+
+        logger.log()
+        logger.log(message.join('\n'))
+        logger.log()
       }
       cb(null, packagesToArray(result.dependencies))
     })
@@ -189,20 +244,16 @@ function getBytes (cb) {
   })
 }
 
-log()
-
 installPackages(packages, function (err, installedPackages) {
   if (err) {
     throw err
   }
 
   if (installedPackages.length > 0) {
-    log('Downloaded %s package(s)', installedPackages.length)
-    log()
+    logger.progress('Downloaded %s package(s)', installedPackages.length)
   }
 
-  log('Weighing %s…', humanize(packages.map(formatPackage())))
-  log()
+  logger.progress('Weighing %s…', humanize(packages.map(formatPackage())))
 
   var builtins = packages.filter(isBuiltin)
 
@@ -218,7 +269,8 @@ installPackages(packages, function (err, installedPackages) {
   var entries = regular.concat(local)
 
   var b = browserify(entries, {
-    extensions: ['.js', '.json']
+    extensions: ['.js', '.json'],
+    ignoreMissing: true
   })
     .transform(envify, {global: true})
 
@@ -228,27 +280,36 @@ installPackages(packages, function (err, installedPackages) {
 
   var bstream = b.bundle()
 
+  logger.progress('Bundling…')
+
   bstream.pipe(getBytes(function (bytes) {
-    log('Approximate weight of %s:', humanize(packages.map(formatPackage())))
-    log('  Uncompressed: %s', prettyBytes(bytes))
+    logger.log('Approximate weight of %s:', humanize(packages.map(formatPackage())))
+    logger.log('  Uncompressed: %s', prettyBytes(bytes))
+    minifiedStream && logger.progress('Minifying…')
   }))
 
   var minifiedStream = shouldMinify && bstream.pipe(argv.minifier === 'closure' ? closureCompiler() : uglifyStream())
   var gzipStream = shouldGzip && (shouldMinify ? minifiedStream : bstream).pipe(zlib.createGzip({level: gzipLevel}))
 
   minifiedStream && minifiedStream.pipe(getBytes(function (bytes) {
-    log('  Minified (' + argv.minifier + '): %s', prettyBytes(bytes))
+    logger.log('  Minified (' + argv.minifier + '): %s', prettyBytes(bytes))
+    gzipStream && logger.progress('Compressing…')
   }))
 
   gzipStream && gzipStream.pipe(getBytes(function (bytes) {
-    log('  %s (level: %s): %s', shouldMinify ? 'Minified and gzipped' : 'Gzipped, not minified', gzipLevel || 'default', prettyBytes(bytes))
+    logger.log('  %s (level: %s): %s', shouldMinify ? 'Minified and gzipped' : 'Gzipped, not minified', gzipLevel || 'default', prettyBytes(bytes))
   }))
 
   function throwError (error) {
     throw error
   }
 
-  [bstream, minifiedStream, gzipStream].filter(Boolean).forEach(function (stream) {
+  var last = gzipStream || minifiedStream || bstream
+  last.once('end', function () {
+    logger.stopSpinner()
+  })
+
+  ;[bstream, minifiedStream, gzipStream].filter(Boolean).forEach(function (stream) {
     stream.on('error', throwError)
     stream.pipe(devnull())
   })
