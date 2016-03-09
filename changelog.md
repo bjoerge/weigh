@@ -1,3 +1,7 @@
+## 3.2.0
+- Improved warning when missing peer deps
+- Made removing local node_modules cache folder default behavior and removed --clean option
+
 ## 3.1.0
 - Add --version flag and show help when no packages are specified
 

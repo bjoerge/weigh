@@ -75,7 +75,6 @@ var argv = parseArgs(process.argv.slice(2), {
     'minify',
     'gzip',
     'uncompressed',
-    'clear',
     'verbose'
   ],
   alias: {
@@ -83,7 +82,6 @@ var argv = parseArgs(process.argv.slice(2), {
     g: 'gzip-level',
     m: 'minifier',
     u: 'uncompressed',
-    clean: 'clear',
     v: 'verbose'
   },
   default: {
@@ -111,11 +109,6 @@ if (argv.version) {
   process.exit(0)
 }
 
-if (argv.clean) {
-  rimraf.sync(MODULE_CACHE_PATH)
-  logger.log('Local node_modules cache cleared.')
-}
-
 var gzipLevel = argv['gzip-level']
 var shouldMinify = !argv.uncompressed && argv.minify
 var shouldGzip = !argv.uncompressed && argv.gzip
@@ -133,6 +126,7 @@ var packages = argv._
 
 if (packages.length === 0) {
   logger.log('Error: No packages specified.')
+  logger.log()
   logger.log(help())
   process.exit(0)
 }
@@ -243,6 +237,9 @@ function getBytes (cb) {
     cb(length)
   })
 }
+
+rimraf.sync(MODULE_CACHE_PATH)
+verbose('Local node_modules cache cleared.')
 
 installPackages(packages, function (err, installedPackages) {
   if (err) {

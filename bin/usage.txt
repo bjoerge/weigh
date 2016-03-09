@@ -2,10 +2,10 @@ Usage: weigh [@scope/]module[@version][/package/relative/module.js] [@scope/]mod
 
   Options:
     --help, -h          Show this usage information
+    --version           Show version
     --minifier, -m      Specify which JavaScript minifier to use. Can be either `uglify` for UglifyJS (default) or
                         `closure` for Closure Compiler.
     --verbose, -v       Do a little more logging along the way
-    --clean             Remove local node_modules cache before installing
     --gzip-level, -g    Gzip compression level
     --no-minify         Don't minify
     --no-gzip           Don't gzip
