@@ -196,11 +196,13 @@ function installPackages (pkgs, cb) {
         message.push('')
         message.push(
           'This means that ' + humanize(requiredBys) + ' will going to need additional modules to work. ' +
-          'Peer dependencies are not installed by weigh'
+          'Peer dependencies are not installed by weigh.'
         )
         message.push('')
-        message.push('If you want to check the weight with these peer dependencies included, just add ')
-        message.push('them to the weigh command like this:')
+        message.push(
+          'If you want to check the weight with these peer dependencies included, just add ' +
+          'them to the weigh command like this:'
+        )
 
         var suggestedArgs = []
           .concat(process.argv.slice(2).sort())
