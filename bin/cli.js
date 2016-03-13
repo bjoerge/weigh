@@ -4,6 +4,7 @@ var browserify = require('browserify')
 var exec = require('child_process').exec
 var path = require('path')
 var devnull = require('dev-null')
+var updateNotifier = require('update-notifier')
 var prettyBytes = require('pretty-bytes')
 var zlib = require('zlib')
 var humanize = require('humanize-list')
@@ -18,15 +19,18 @@ var tempfile = require('tempfile')
 var format = require('util').format
 var ora = require('ora')
 var uniq = require('uniq')
+var uglify = require('uglify-js')
 
 var parsePackage = require('../parse-package')
 var formatPackage = require('../format-package')
+
+var selfPkg = require('../package')
 
 var BUILTINS = require('browserify/lib/builtins')
 var SUPPORTED_MINIFIERS = ['closure', 'uglify']
 var MODULE_CACHE_PATH = path.join(__dirname, '..', '.cached_modules')
 
-var uglify = require('uglify-js')
+updateNotifier({pkg: selfPkg}).notify({defer: false})
 
 function createLogger () {
   var spinning = false
@@ -105,7 +109,7 @@ if (argv.help) {
 }
 
 if (argv.version) {
-  logger.log(require('../package').version)
+  logger.log(selfPkg.version)
   process.exit(0)
 }
 
