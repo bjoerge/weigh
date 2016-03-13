@@ -1,3 +1,7 @@
+## 3.3.0
+- Add update-notifier and notify about updates
+- Minor formatting
+
 ## 3.2.0
 - Improved warning when missing peer deps
 - Made removing local node_modules cache folder default behavior and removed --clean option
