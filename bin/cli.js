@@ -10,7 +10,7 @@ var zlib = require('zlib')
 var humanize = require('humanize-list')
 var envify = require('envify')
 var fs = require('fs')
-var resolveFrom = require('resolve-from')
+var browserResolve = require('browser-resolve')
 var through = require('through')
 var parseArgs = require('minimist')
 var xtend = require('xtend')
@@ -262,7 +262,7 @@ installPackages(packages, function (err, installedPackages) {
 
   var regular = packages.filter(isPackage).map(formatPackage())
     .map(function (pkg) {
-      return resolveFrom(MODULE_CACHE_PATH, pkg)
+      return browserResolve.sync(pkg, {filename: path.join(MODULE_CACHE_PATH, 'index.js')})
     })
 
   var local = regular.filter(isLocal).map(function (pkg) {
