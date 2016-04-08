@@ -18,6 +18,7 @@
   "author": "Bjørge Næss",
   "license": "MIT",
   "dependencies": {
+    "browser-resolve": "^1.11.1",
     "browserify": "^13.0.0",
     "dev-null": "^0.1.1",
     "envify": "^3.4.0",
@@ -27,7 +28,6 @@
     "ora": "^0.2.0",
     "pretty-bytes": "^3.0.1",
     "require-package-name": "^2.0.1",
-    "resolve-from": "^2.0.0",
     "rimraf": "^2.5.2",
     "tempfile": "^1.1.1",
     "through": "^2.3.8",
