@@ -24,6 +24,7 @@
     "envify": "^3.4.0",
     "google-closure-compiler": "^20160208.1.0",
     "humanize-list": "^1.0.1",
+    "merge2": "^1.0.2",
     "minimist": "^1.2.0",
     "ora": "^0.2.0",
     "pretty-bytes": "^3.0.1",
