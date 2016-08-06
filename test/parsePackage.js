@@ -1,6 +1,6 @@
 /* globals it describe */
 var expect = require('expect')
-var parsePackage = require('../parse-package')
+var parsePackage = require('../lib/parsePackage')
 
 const expectations = [
   ['@myorg/mypkg@latest/foo/bar.js', {

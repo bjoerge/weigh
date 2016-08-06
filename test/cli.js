@@ -3,57 +3,51 @@
 var expect = require('expect')
 var exec = require('child_process').exec
 
-function createOutputRegex (minifier) {
-  return new RegExp(
-    'Approximate weight of (.+):\n' +
-    '  Uncompressed: (.+)\n' +
-    '  Minified \\(' + minifier + '\\): (.+)\n' +
-    '  Minified and gzipped \\(level: (.+)\\): (.+)'
-  )
-}
+var BINARY = require.resolve('../bin/cli.js')
 
-var expectations = [
-  ['Single package', 'lodash'],
-  ['Multiple packages', 'lodash react history'],
-  ['Specifying gzip level', 'lodash', 9],
-  ['Builtins', 'url'],
-  ['Local file', '../parse-package.js'],
-  ['Package relative module', 'lodash/map'],
-  ['Scoped package', '@bjoerge/npm-private-test'],
-  ['Scoped package with version specifier', '@bjoerge/npm-private-test@latest'],
-  ['Scoped package with version specifier *and* relative path', '@bjoerge/npm-private-test@0.0.2/some/thing.js'],
-  [
-    'Combination of regular package, local file, builtin, and package relative module',
-    'async ../parse-package.js path lodash/shuffle'
-  ]
-]
+describe('error handling', function () {
+  it('fails if bundle entry is not resolved', function (done) {
+    exec(BINARY + ' ./doesnotexists.js', function (error, stdout, stderr) {
+      expect(error).toExist()
+      expect(stdout).toNotExist()
+      expect(stderr).toInclude('File not found: ./doesnotexists.js')
+      done()
+    })
+  })
 
-;['closure', 'uglify'].forEach(function (minifier) {
-  describe('Using ' + minifier + ' to minify', function () {
-    expectations.forEach(function (expectation) {
-      var desc = expectation[0]
-      var args = expectation[1]
+  it('fails if a module that does not exist are included in bundle', function (done) {
+    exec(BINARY + ' @bjoerge/doesnotexist', function (error, stdout, stderr) {
+      expect(error).toExist()
+      expect(stdout).toNotExist()
+      expect(stderr).toInclude("'@bjoerge/doesnotexist' is not in the npm registry")
+      done()
+    })
+  })
+})
 
-      var gzipLevel = expectation[2]
+describe('bundling local files', function () {
+  it('actually includes the file in the bundle', function (done) {
+    exec(BINARY + ' ./doesnotexists.js', function (error, stdout, stderr) {
+      expect(error).toExist()
+      expect(stdout).toNotExist()
+      expect(stderr).toInclude('File not found: ./doesnotexists.js')
+      done()
+    })
+  })
+})
 
-      var cmd = args +
-        (gzipLevel ? ' --gzip-level ' + gzipLevel : '') +
-        ' --minifier ' + minifier
-
-      var expectedOutput = createOutputRegex(minifier)
-
-      describe(desc, function () {
-        this.timeout(1000 * 60 * 10)
-        this.slow(1000 * 60 * 10)
-        it('weigh ' + cmd, function (done) {
-          exec(require.resolve('../bin/cli.js') + ' ' + cmd, function (error, stdout, stderr) {
-            expect(error).toNotExist('Expected no error, instead got ' + error)
-            expect(stderr).toNotExist('Expected empty stderr')
-            expect(stdout).toMatch(expectedOutput)
-            done()
-          })
-        })
-      })
+describe('bundling local files', function () {
+  it('actually includes the file in the bundle', function (done) {
+    exec(BINARY + ' ./test/fixtures/content.js', function (error, stdout, stderr) {
+      expect(error).toNotExist()
+      expect(stderr).toNotExist()
+      expect(stdout).toExist()
+      var sizeMatch = stdout.match(/Uncompressed: (.+) (.+)/)
+      var size = parseFloat(sizeMatch[1])
+      var unit = sizeMatch[2]
+      expect(unit).toBe('kB', "Expected unit of bundle size to be in 'kB', instead got %s", unit)
+      expect(size).toBeGreaterThanOrEqualTo(1.3, 'Expected bundle size to be greater than the content of the bundled file')
+      done()
     })
   })
 })
