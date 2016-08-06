@@ -1,3 +1,6 @@
+## 3.4.0
+- Drop Node 0.12 support
+
 ## 3.3.3
 - Internal refactor. No API changes.
 - Fix a bug that caused local files not to be included in bundle 
