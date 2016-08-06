@@ -22,11 +22,11 @@
     "browserify": "^13.0.0",
     "dev-null": "^0.1.1",
     "envify": "^3.4.0",
-    "google-closure-compiler": "^20160208.1.0",
+    "google-closure-compiler": "^20160713.2.0",
     "humanize-list": "^1.0.1",
     "merge2": "^1.0.2",
     "minimist": "^1.2.0",
-    "ora": "^0.2.0",
+    "ora": "^0.3.0",
     "pretty-bytes": "^3.0.1",
     "require-package-name": "^2.0.1",
     "resolve-from": "^2.0.0",
@@ -35,14 +35,14 @@
     "through2": "^2.0.1",
     "uglify-js": "^2.6.2",
     "uniq": "^1.0.1",
-    "update-notifier": "^0.6.1",
+    "update-notifier": "^1.0.2",
     "xtend": "^4.0.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "expect": "^1.14.0",
-    "mocha": "^2.4.5",
-    "snazzy": "^3.0.0",
-    "standard": "^6.0.7"
+    "mocha": "^3.0.1",
+    "snazzy": "^4.0.0",
+    "standard": "^7.1.2"
   }
 }
