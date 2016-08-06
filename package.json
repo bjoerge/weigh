@@ -32,7 +32,7 @@
     "resolve-from": "^2.0.0",
     "rimraf": "^2.5.2",
     "tempfile": "^1.1.1",
-    "through": "^2.3.8",
+    "through2": "^2.0.1",
     "uglify-js": "^2.6.2",
     "uniq": "^1.0.1",
     "update-notifier": "^0.6.1",
