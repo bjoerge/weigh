@@ -1,3 +1,7 @@
+## 3.3.3
+- Internal refactor. No API changes.
+- Fix a bug that caused local files not to be included in bundle 
+
 ## 3.3.0
 - Add update-notifier and notify about updates
 - Minor formatting
