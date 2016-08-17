@@ -135,7 +135,7 @@ function handleProgress (progressEvent) {
   } else if (progressEvent.level === 'progress') {
     logger.progress.apply(logger, progressEvent.args)
   } else if (progressEvent.level === 'missingPeerDeps') {
-    var missingPeers = progressEvent.peerDeps
+    var missingPeers = progressEvent.args[0].peerDeps
     var message = ['Warning: Found missing peer dependencies while downloading packages:']
 
     missingPeers.map(function (missing) {
@@ -163,8 +163,8 @@ function handleProgress (progressEvent) {
         return parsePackage(missing.requires).name
       })))
 
-    message.push('weigh ' + suggestedArgs.join(' '))
+    message.push('weigh ' + suggestedArgs.join(' ') + '\n')
 
-    logger.info(message)
+    logger.log(message.join('\n'))
   }
 }
