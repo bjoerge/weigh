@@ -18,6 +18,9 @@
   "author": "Bjørge Næss",
   "license": "MIT",
   "dependencies": {
+    "array-groupby": "^0.1.0",
+    "babel-core": "^6.5.2",
+    "babel-preset-babili": "0.0.1",
     "browser-resolve": "^1.11.1",
     "browserify": "^13.0.0",
     "dev-null": "^0.1.1",
@@ -26,6 +29,7 @@
     "humanize-list": "^1.0.1",
     "merge2": "^1.0.2",
     "minimist": "^1.2.0",
+    "multistream": "^2.1.0",
     "ora": "^0.3.0",
     "pretty-bytes": "^3.0.1",
     "require-package-name": "^2.0.1",

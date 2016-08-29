@@ -7,7 +7,7 @@ var BINARY = require.resolve('../bin/cli.js')
 
 describe('error handling', function () {
   it('fails if bundle entry is not resolved', function (done) {
-    exec(BINARY + ' ./doesnotexists.js', function (error, stdout, stderr) {
+    exec(BINARY + ' ./doesnotexists.js --__keepcache', function (error, stdout, stderr) {
       expect(error).toExist()
       expect(stdout).toNotExist()
       expect(stderr).toInclude('File not found: ./doesnotexists.js')
@@ -16,7 +16,7 @@ describe('error handling', function () {
   })
 
   it('fails if a module that does not exist are included in bundle', function (done) {
-    exec(BINARY + ' @bjoerge/doesnotexist', function (error, stdout, stderr) {
+    exec(BINARY + ' @bjoerge/doesnotexist --__keepcache', function (error, stdout, stderr) {
       expect(error).toExist()
       expect(stdout).toNotExist()
       expect(stderr).toInclude("'@bjoerge/doesnotexist' is not in the npm registry")
@@ -27,7 +27,7 @@ describe('error handling', function () {
 
 describe('bundling local files', function () {
   it('actually includes the file in the bundle', function (done) {
-    exec(BINARY + ' ./doesnotexists.js', function (error, stdout, stderr) {
+    exec(BINARY + ' ./doesnotexists.js --__keepcache', function (error, stdout, stderr) {
       expect(error).toExist()
       expect(stdout).toNotExist()
       expect(stderr).toInclude('File not found: ./doesnotexists.js')
@@ -38,7 +38,7 @@ describe('bundling local files', function () {
 
 describe('bundling local files', function () {
   it('actually includes the file in the bundle', function (done) {
-    exec(BINARY + ' ./test/fixtures/content.js', function (error, stdout, stderr) {
+    exec(BINARY + ' ./test/fixtures/content.js --__keepcache', function (error, stdout, stderr) {
       expect(error).toNotExist()
       expect(stderr).toNotExist()
       expect(stdout).toExist()

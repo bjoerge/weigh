@@ -14,7 +14,8 @@ var createLogger = require('../lib/createLogger')
 var parsePackage = require('../lib/parsePackage')
 var weigh = require('../lib/weigh')
 
-var SUPPORTED_MINIFIERS = ['closure', 'uglify']
+var SUPPORTED_MINIFIERS = ['closure', 'uglify', 'babili']
+var SUPPORTED_BUNDLERS = ['browserify', 'concat']
 var MODULE_CACHE_PATH = path.join(__dirname, '..', '.cached_modules')
 
 updateNotifier({pkg: selfPkg}).notify({defer: false})
@@ -36,19 +37,23 @@ var argv = parseArgs(process.argv.slice(2), {
     'minify',
     'gzip',
     'uncompressed',
-    'verbose'
+    'verbose',
+    '__keepcache'
   ],
   alias: {
     h: 'help',
     g: 'gzip-level',
     m: 'minifier',
+    b: 'bundler',
     u: 'uncompressed',
     v: 'verbose'
   },
   default: {
     minifier: 'uglify',
+    bundler: 'browserify',
     gzip: true,
-    minify: true
+    minify: true,
+    __keepcache: false
   },
   unknown: function (arg) {
     if (arg[0] === '-') {
@@ -78,22 +83,21 @@ if (shouldMinify && SUPPORTED_MINIFIERS.indexOf(argv.minifier) === -1) {
   console.error('Unknown --minifier option: `%s`. Supported minifiers are: %s', argv.minifier, SUPPORTED_MINIFIERS.join(', '))
   process.exit(1)
 }
-
-function requireMinifier (name) {
-  switch (name) {
-    case 'closure':
-      return require('../lib/minifiers/closure')
-    case 'uglify':
-      return require('../lib/minifiers/uglify')
-  }
-  throw new Error('Invalid minifier: ' + name)
+if (SUPPORTED_BUNDLERS.indexOf(argv.bundler) === -1) {
+  console.error('Unknown --bundler option: `%s`. Supported bundlers are: %s', argv.bundler, SUPPORTED_BUNDLERS.join(', '))
+  process.exit(1)
 }
 
 function resolveMinifier (name) {
-  return {name: name, minify: requireMinifier(name)}
+  return {name: name, minify: require('../lib/minifiers/' + name)}
+}
+
+function resolveBundler (name) {
+  return {name: name, bundle: require('../lib/bundlers/' + name)}
 }
 
 var minifier = shouldMinify && resolveMinifier(argv.minifier)
+var bundler = resolveBundler(argv.bundler)
 
 var packages = argv._
   .filter(function (arg) {
@@ -108,12 +112,15 @@ if (packages.length === 0) {
   process.exit(0)
 }
 
-rimraf.sync(MODULE_CACHE_PATH)
-handleProgress({level: 'verbose', args: ['Local node_modules cache cleared.']})
+if (!argv.__keepcache) { // (used by tests only)
+  rimraf.sync(MODULE_CACHE_PATH)
+  handleProgress({level: 'verbose', args: ['Local node_modules cache cleared.']})
+}
 
 var progress = weigh(packages, {
   gzipLevel: gzipLevel,
   minifier: minifier,
+  bundler: bundler,
   shouldGzip: shouldGzip,
   prefix: MODULE_CACHE_PATH
 })

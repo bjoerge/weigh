@@ -30,51 +30,52 @@ var expectations = [
   ]
 ]
 
-describe('error handling', function () {
-  it('fails if bundle entry is not resolved', function (done) {
-    exec(BINARY + ' ./doesnotexists.js', function (error, stdout, stderr) {
-      expect(error).toExist()
-      expect(stdout).toNotExist()
-      expect(stderr).toInclude('File not found: ./doesnotexists.js')
-      done()
-    })
-  })
-})
+function createCmd (args, options) {
+  return args + ' ' + options
+      .filter(Boolean)
+      .map(function (opt) {
+        return '--' + opt[0] + ' ' + opt[1]
+      })
+      .join(' ')
+}
 
-describe('bundling local files', function () {
-  it('actually includes the file in the bundle', function (done) {
-    exec(BINARY + ' ./doesnotexists.js', function (error, stdout, stderr) {
-      expect(error).toExist()
-      expect(stdout).toNotExist()
-      expect(stderr).toInclude('File not found: ./doesnotexists.js')
-      done()
-    })
-  })
-})
+const BUNDLERS = ['browserify', 'concat']
+const MINIFIERS = ['uglify', 'closure', 'babili']
 
-;['uglify', 'closure'].forEach(function (minifier) {
-  describe('Using ' + minifier + ' to minify', function () {
-    expectations.forEach(function (expectation) {
-      var desc = expectation[0]
-      var args = expectation[1]
+BUNDLERS.forEach(function (bundler) {
+  describe('Using ' + bundler + ' as bundler', function () {
+    MINIFIERS.forEach(function (minifier) {
+      describe('Using ' + minifier + ' as minifier', function () {
+        expectations.forEach(function (expectation) {
+          var desc = expectation[0]
+          var args = expectation[1]
 
-      var gzipLevel = expectation[2]
+          if (bundler === 'concat' && args === 'url') {
+            return
+          }
 
-      var cmd = args +
-        (gzipLevel ? ' --gzip-level ' + gzipLevel : '') +
-        ' --minifier ' + minifier
+          var gzipLevel = expectation[2]
 
-      var expectedOutput = createOutputRegex(minifier)
+          var cmd = createCmd(args, [
+            ['bundler', bundler],
+            gzipLevel && ['gzip-level', gzipLevel],
+            ['minifier', minifier]
+          ])
 
-      describe(desc, function () {
-        this.timeout(1000 * 60 * 10)
-        this.slow(1000 * 60 * 10)
-        it('weigh ' + cmd, function (done) {
-          exec(BINARY + ' ' + cmd, function (error, stdout, stderr) {
-            expect(error).toNotExist('Expected no error, instead got ' + error)
-            expect(stderr).toNotExist('Expected empty stderr')
-            expect(stdout).toMatch(expectedOutput)
-            done()
+          var expectedOutput = createOutputRegex(minifier)
+
+          describe(desc, function () {
+            this.timeout(1000 * 60 * 10)
+            this.slow(1000 * 60 * 10)
+            it('weigh ' + cmd, function (done) {
+              exec(BINARY + ' ' + cmd + ' --__keepcache', function (error, stdout, stderr) {
+                expect(error).toNotExist('Expected no error, instead got ' + error)
+                console.log(stderr)
+                expect(stderr).toNotExist('Expected empty stderr')
+                expect(stdout).toMatch(expectedOutput)
+                done()
+              })
+            })
           })
         })
       })

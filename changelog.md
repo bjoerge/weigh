@@ -1,3 +1,12 @@
+## 3.5.0
+- Babili support! Weigh using babili as minifier with `-m babili`
+- More bundlers with `-b` flag:
+   weigh now supports specifying a bundler other than browserify with the `-b` flag.
+
+   So far there are three supported bundlers:
+  - **`browserify`** (default)
+  - **`concat`** Just concat the modules. Will use node's module resolution on the modules given as arguments, but will not do any fancy recursive AST traversal to include any imported dependencies.
+
 ## 3.4.0
 - Drop Node 0.12 support
 

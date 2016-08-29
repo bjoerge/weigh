@@ -2,7 +2,7 @@ Usage: weigh [@scope/]module[@version][/package/relative/module.js] [@scope/]mod
 
   Options:
     --help, -h          Show this usage information
-    --version           Show version
+    --bundler -b        Which bundler to use. Can be either `browserify` (default) or `concat`.
     --minifier, -m      Specify which JavaScript minifier to use. Can be either `uglify` for UglifyJS (default) or
                         `closure` for Closure Compiler.
     --verbose, -v       Do a little more logging along the way
@@ -10,6 +10,7 @@ Usage: weigh [@scope/]module[@version][/package/relative/module.js] [@scope/]mod
     --no-minify         Don't minify
     --no-gzip           Don't gzip
     --uncompressed, -u  Shorthand for --no-minify --no-gzip
+    --version           Show version
 
     Examples:
       weigh lodash
