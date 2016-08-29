@@ -1,6 +1,6 @@
 {
   "name": "weigh",
-  "version": "3.4.1",
+  "version": "3.5.0",
   "description": "A command line tool to check the weight (in bytes) of any browser compatible module",
   "main": "./bin/cli.js",
   "scripts": {
