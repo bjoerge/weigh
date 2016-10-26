@@ -38,7 +38,7 @@ var argv = parseArgs(process.argv.slice(2), {
     'gzip',
     'uncompressed',
     'verbose',
-    '__keepcache'
+    '__keepcache' // for tests only
   ],
   alias: {
     h: 'help',
