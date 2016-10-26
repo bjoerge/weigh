@@ -53,6 +53,11 @@ BUNDLERS.forEach(function (bundler) {
           if (bundler === 'concat' && args === 'url') {
             return
           }
+          // Remove when https://github.com/facebook/react/issues/7551 is fixed and released
+          if (minifier === 'closure' && args.includes('react')) {
+            return
+          }
+          // ---------
 
           var gzipLevel = expectation[2]
 
