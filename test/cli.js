@@ -26,7 +26,7 @@ describe('error handling', function () {
 })
 
 describe('bundling local files', function () {
-  it('actually includes the file in the bundle', function (done) {
+  it('fails for missing files', function (done) {
     exec(BINARY + ' ./doesnotexists.js --__keepcache', function (error, stdout, stderr) {
       expect(error).toExist()
       expect(stdout).toNotExist()
@@ -34,9 +34,7 @@ describe('bundling local files', function () {
       done()
     })
   })
-})
 
-describe('bundling local files', function () {
   it('actually includes the file in the bundle', function (done) {
     exec(BINARY + ' ./test/fixtures/content.js --__keepcache', function (error, stdout, stderr) {
       expect(error).toNotExist()
@@ -47,6 +45,33 @@ describe('bundling local files', function () {
       var unit = sizeMatch[2]
       expect(unit).toBe('kB', "Expected unit of bundle size to be in 'kB', instead got %s", unit)
       expect(size).toBeGreaterThanOrEqualTo(1.3, 'Expected bundle size to be greater than the content of the bundled file')
+      done()
+    })
+  })
+  it('builds with --output flag', function (done) {
+    exec(BINARY + ' ./test/fixtures/hello.js --output', function (error, stdout, stderr) {
+      expect(error).toNotExist()
+      expect(stderr).toNotExist()
+      expect(stdout).toExist()
+      expect(stdout).toInclude('hello world')
+      done()
+    })
+  })
+  it('builds with --env production by default', function (done) {
+    exec(BINARY + ' ./test/fixtures/env.js --output', function (error, stdout, stderr) {
+      expect(error).toNotExist()
+      expect(stderr).toNotExist()
+      expect(stdout).toExist()
+      expect(stdout).toInclude('if ("production" === "production") {console.log("production")}')
+      done()
+    })
+  })
+  it('builds another value for --env', function (done) {
+    exec(BINARY + ' ./test/fixtures/env.js --env=development --output', function (error, stdout, stderr) {
+      expect(error).toNotExist()
+      expect(stderr).toNotExist()
+      expect(stdout).toExist()
+      expect(stdout).toInclude('if ("development" === "production") {console.log("development")}')
       done()
     })
   })
