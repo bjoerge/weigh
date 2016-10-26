@@ -39,6 +39,7 @@ var argv = parseArgs(process.argv.slice(2), {
     'gzip',
     'uncompressed',
     'verbose',
+    'output',
     '__keepcache' // for tests only
   ],
   alias: {
@@ -47,12 +48,14 @@ var argv = parseArgs(process.argv.slice(2), {
     m: 'minifier',
     b: 'bundler',
     u: 'uncompressed',
+    o: 'output',
     v: 'verbose'
   },
   default: {
     minifier: 'uglify',
     bundler: 'browserify',
     env: 'production',
+    output: false,
     gzip: true,
     minify: true,
     __keepcache: false
@@ -123,6 +126,7 @@ var progress = weigh(packages, {
   gzipLevel: gzipLevel,
   minifier: minifier,
   bundler: bundler,
+  output: argv.output,
   env: argv.env,
   shouldGzip: shouldGzip,
   prefix: MODULE_CACHE_PATH
@@ -135,6 +139,9 @@ progress.on('error', function (error) {
 })
 
 function handleProgress (progressEvent) {
+  if (argv.output) {
+    return
+  }
   if (progressEvent.level === 'verbose') {
     if (argv.verbose) {
       logger.log.apply(logger, progressEvent.args)
