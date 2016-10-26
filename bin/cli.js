@@ -29,7 +29,8 @@ function help () {
 var argv = parseArgs(process.argv.slice(2), {
   string: [
     'minifier',
-    'gzip-level'
+    'gzip-level',
+    'env'
   ],
   boolean: [
     'version',
@@ -51,6 +52,7 @@ var argv = parseArgs(process.argv.slice(2), {
   default: {
     minifier: 'uglify',
     bundler: 'browserify',
+    env: 'production',
     gzip: true,
     minify: true,
     __keepcache: false
@@ -121,6 +123,7 @@ var progress = weigh(packages, {
   gzipLevel: gzipLevel,
   minifier: minifier,
   bundler: bundler,
+  env: argv.env,
   shouldGzip: shouldGzip,
   prefix: MODULE_CACHE_PATH
 })
