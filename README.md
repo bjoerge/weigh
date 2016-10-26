@@ -15,14 +15,28 @@ Usage: weigh [@scope/]module[@version][/package/relative/module.js] [@scope/]mod
 
   Options:
     --help, -h          Show this usage information
-    --version           Show version
-    --minifier, -m      Specify which JavaScript minifier to use. Can be either `uglify` for UglifyJS (default) or
-                        `closure` for Closure Compiler.
+    --bundler -b        Which bundler to use. Can be one of
+                          • `browserify` (default)
+                          • `concat`
+    --minifier, -m      Specify which JavaScript minifier to use. Can be either
+                          • `uglify` for UglifyJS (default)
+                          • `closure` for Closure Compiler
+                          • `babili` for Babili
     --verbose, -v       Do a little more logging along the way
     --gzip-level, -g    Gzip compression level
     --no-minify         Don't minify
     --no-gzip           Don't gzip
     --uncompressed, -u  Shorthand for --no-minify --no-gzip
+    --env               The value of process.env.NODE_ENV inside the bundle.
+                        Defaults to `production`
+    --output -o         Output compiled bundle to stdout. This will neither
+                        minify, gzip, nor show any progress, but just output
+                        the generated bundle. If browserify used for bundling,
+                        `fullpaths: true` will be passed as an option to
+                        browserify, so that e.g. `discify` can be used for
+                        further inspection
+    --version           Show version
+
 ```
 
 ## Example:
@@ -42,26 +56,38 @@ Approximate weight of lodash:
   Minified and gzipped (level: default): ~18.82 kB
 ```
 
-Note: `weigh` uses browserify under the hood to bundle the module, and adds envify as a global
-transform, so its possible to weight a production build of modules that does code branching based on
-`process.env.NODE_ENV`.
+Note: By default `weigh` uses browserify under the hood to bundle the module, and adds envify as a global transform, with `NODE_ENV` set to `production`
+
+This means weigh will report the size of a production build for modules that does code branching based on `process.env.NODE_ENV`
 
 For example compare:
 
 ```
-$ weigh react
-Uncompressed: 666.1 kB
-Minified (uglify): 212.63 kB
-Minified and gzipped (level: default): 58.13 kB
+$ weigh redux
+Approximate weight of redux:
+  Uncompressed: 28.5 kB
+  Minified (uglify): 7.82 kB
+  Minified and gzipped (level: default): 2.73 kB
 ```
 
 ...with:
 
 ```
-$ NODE_ENV=production weigh react
-Uncompressed: 657.2 kB
-Minified (uglify): 158.36 kB
-Minified and gzipped (level: default): 42.7 kB
+$ weigh redux --development
+Approximate weight of redux:
+  Uncompressed: 28.5 kB
+  Minified (uglify): 9.23 kB
+  Minified and gzipped (level: default): 3.36 kB
+```
+
+## Inspecting compiled bundle
+You can output the compiled bundle for further inspection using `--output` (or `-o`)
+command line option. This will just pipe generated the bundle to stdout, which also enables further bundle size breakdown e.g. using [hughsk/disc](https://github.com/hughsk/disc).
+
+For example:
+
+```
+weigh --output rxjs | discify --open
 ```
 
 ### Some more examples of supported module formats
@@ -77,9 +103,6 @@ Minified and gzipped (level: default): 42.7 kB
 - `weigh ./path/to/foo/bar.js`
 - `weigh /absolute/path/to/foo/bar.js`
 - `weigh .` (module in cwd)
-
-## Todo (maybe?)
-- Allow outputting the built bundle for piping to e.g. [hughsk/disc](https://github.com/hughsk/disc)
 
 # License
 

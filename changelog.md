@@ -1,9 +1,15 @@
+## 4.0.0
+- Added `--env` flag with `production` as default value.
+- Added `--output` flag that will output the compiled bundle.
+- `[deps]` Updated babel-preset-babili to `v0.0.5`
+- `[deps]` Updated Google Closure Compiler to `v20161024.0.0`
+
 ## 3.5.0
 - Babili support! Weigh using babili as minifier with `-m babili`
 - More bundlers with `-b` flag:
    weigh now supports specifying a bundler other than browserify with the `-b` flag.
 
-   So far there are three supported bundlers:
+   So far there are two supported bundlers:
   - **`browserify`** (default)
   - **`concat`** Just concat the modules. Will use node's module resolution on the modules given as arguments, but will not do any fancy recursive AST traversal to include any imported dependencies.
 
