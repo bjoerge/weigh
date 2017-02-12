@@ -1,8 +1,12 @@
+## 4.1.0
+* [deps] Now using the harmony branch of UglifyJS. Should be able to parse and compress a lot more modules.
+* [deps] Update babel-preset-babili to `0.0.11` and google closure compiler to `20170124.0.0`
+
 ## 4.0.0
 - Added `--env` flag with `production` as default value.
 - Added `--output` flag that will output the compiled bundle.
-- `[deps]` Updated babel-preset-babili to `v0.0.5`
-- `[deps]` Updated Google Closure Compiler to `v20161024.0.0`
+- `[deps]` Updated babel-preset-babili to `0.0.5`
+- `[deps]` Updated Google Closure Compiler to `20161024.0.0`
 
 ## 3.5.0
 - Babili support! Weigh using babili as minifier with `-m babili`
