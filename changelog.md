@@ -1,3 +1,6 @@
+## 4.2.0
+* [deps] Replace the harmony branch of UglifyJS with the uglify-es package
+
 ## 4.1.0
 * [deps] Now using the harmony branch of UglifyJS. Should be able to parse and compress a lot more modules.
 * [deps] Update babel-preset-babili to `0.0.11` and google closure compiler to `20170124.0.0`
