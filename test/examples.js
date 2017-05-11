@@ -40,7 +40,7 @@ function createCmd (args, options) {
 }
 
 const BUNDLERS = ['browserify', 'concat']
-const MINIFIERS = ['uglify', 'closure', 'babili']
+const MINIFIERS = ['butternut', 'uglify', 'closure', 'babili']
 
 BUNDLERS.forEach(function (bundler) {
   describe('Using ' + bundler + ' as bundler', function () {

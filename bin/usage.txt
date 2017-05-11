@@ -1,28 +1,40 @@
+
 Usage: weigh [@scope/]module[@version][/package/relative/module.js] [@scope/]module[@version][/package/relative/module.js ...]
 
   Options:
     --help, -h          Show this usage information
+
     --bundler -b        Which bundler to use. Can be one of
                           • `browserify` (default)
                           • `concat`
+
     --minifier, -m      Specify which JavaScript minifier to use. Can be either
                           • `uglify` for UglifyJS (default)
                           • `closure` for Closure Compiler
                           • `babili` for Babili
+                          • `butternut` for Butternut
+
     --verbose, -v       Do a little more logging along the way
+
     --gzip-level, -g    Gzip compression level
+
     --no-minify         Don't minify
+
     --no-gzip           Don't gzip
+
     --uncompressed, -u  Shorthand for --no-minify --no-gzip
+
     --env               The value of process.env.NODE_ENV inside the bundle.
                         Defaults to `production`
-    --output -o         Output compiled bundle to stdout. This will neither
-                        minify, gzip, nor show any progress, but just output
-                        the generated bundle. If browserify used for bundling,
-                        `fullpaths: true` will be passed as an option to
-                        browserify, so that e.g. `discify` can be used for
-                        further inspection
-    --version           Show version
+
+    --output -o         Output final result to stdout. You may also want to
+                        disable gzipping with --no-gzip
+                        If browserify used for bundling, `fullpaths: true` 
+                        will be passed as an option to browserify, so that
+                        e.g. `discify` can be used for further bundle 
+                        inspection
+
+    --version           Output version
 
     Examples:
       weigh lodash

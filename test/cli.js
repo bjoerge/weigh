@@ -49,7 +49,7 @@ describe('bundling local files', function () {
     })
   })
   it('builds with --output flag', function (done) {
-    exec(BINARY + ' ./test/fixtures/hello.js --output', function (error, stdout, stderr) {
+    exec(BINARY + ' ./test/fixtures/hello.js --output --no-gzip', function (error, stdout, stderr) {
       expect(error).toNotExist()
       expect(stderr).toNotExist()
       expect(stdout).toExist()
@@ -58,7 +58,7 @@ describe('bundling local files', function () {
     })
   })
   it('builds with --env production by default', function (done) {
-    exec(BINARY + ' ./test/fixtures/env.js --output', function (error, stdout, stderr) {
+    exec(BINARY + ' ./test/fixtures/env.js --output --no-gzip --no-minify', function (error, stdout, stderr) {
       expect(error).toNotExist()
       expect(stderr).toNotExist()
       expect(stdout).toExist()
@@ -67,7 +67,7 @@ describe('bundling local files', function () {
     })
   })
   it('builds another value for --env', function (done) {
-    exec(BINARY + ' ./test/fixtures/env.js --env=development --output', function (error, stdout, stderr) {
+    exec(BINARY + ' ./test/fixtures/env.js --env=development --output --no-gzip --no-minify', function (error, stdout, stderr) {
       expect(error).toNotExist()
       expect(stderr).toNotExist()
       expect(stdout).toExist()

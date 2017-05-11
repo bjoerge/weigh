@@ -15,28 +15,51 @@ Usage: weigh [@scope/]module[@version][/package/relative/module.js] [@scope/]mod
 
   Options:
     --help, -h          Show this usage information
+
     --bundler -b        Which bundler to use. Can be one of
                           • `browserify` (default)
                           • `concat`
+
     --minifier, -m      Specify which JavaScript minifier to use. Can be either
                           • `uglify` for UglifyJS (default)
                           • `closure` for Closure Compiler
                           • `babili` for Babili
+                          • `butternut` for Butternut
+
     --verbose, -v       Do a little more logging along the way
+
     --gzip-level, -g    Gzip compression level
+
     --no-minify         Don't minify
+
     --no-gzip           Don't gzip
+
     --uncompressed, -u  Shorthand for --no-minify --no-gzip
+
     --env               The value of process.env.NODE_ENV inside the bundle.
                         Defaults to `production`
-    --output -o         Output compiled bundle to stdout. This will neither
-                        minify, gzip, nor show any progress, but just output
-                        the generated bundle. If browserify used for bundling,
-                        `fullpaths: true` will be passed as an option to
-                        browserify, so that e.g. `discify` can be used for
-                        further inspection
-    --version           Show version
 
+    --output -o         Output final result to stdout. You may also want to
+                        disable gzipping with --no-gzip
+                        If browserify used for bundling, `fullpaths: true` 
+                        will be passed as an option to browserify, so that
+                        e.g. `discify` can be used for further bundle 
+                        inspection
+
+    --version           Output version
+
+    Examples:
+      weigh lodash
+      weigh lodash/collection/map
+      weigh lodash@latest/collection/map
+      weigh @myorg/mypkg
+      weigh @myorg/mypkg@latest
+      weigh @myorg/mypkg/foo/bar.js
+      weigh @myorg/mypkg@latest/foo/bar.js
+      weigh @myorg/mypkg@2.1.4/foo/bar.js
+      weigh ./path/to/foo/bar.js
+      weigh /absolute/path/to/foo/bar.js
+      weigh . (module in cwd)
 ```
 
 ## Example:
@@ -80,14 +103,15 @@ Approximate weight of redux:
   Minified and gzipped (level: default): 3.36 kB
 ```
 
-## Inspecting compiled bundle
-You can output the compiled bundle for further inspection using `--output` (or `-o`)
-command line option. This will just pipe generated the bundle to stdout, which also enables further bundle size breakdown e.g. using [hughsk/disc](https://github.com/hughsk/disc).
+## Inspecting the final result
+You can output the compiled bundle for further inspection using `--output` (or `-o`) command line option. Note: By default this will output the gzipped result, so you'd probably want to use the `--no-gzip` flag 
+
+This will just pipe generated the bundle to stdout, which also enables further bundle size breakdown e.g. using [hughsk/disc](https://github.com/hughsk/disc).
 
 For example:
 
 ```
-weigh --output rxjs | discify --open
+weigh --output rxjs --no-gzip | discify --open
 ```
 
 ### Some more examples of supported module formats

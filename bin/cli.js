@@ -14,7 +14,7 @@ var createLogger = require('../lib/createLogger')
 var parsePackage = require('../lib/parsePackage')
 var weigh = require('../lib/weigh')
 
-var SUPPORTED_MINIFIERS = ['closure', 'uglify', 'babili']
+var SUPPORTED_MINIFIERS = ['closure', 'uglify', 'babili', 'butternut']
 var SUPPORTED_BUNDLERS = ['browserify', 'concat']
 var MODULE_CACHE_PATH = path.join(__dirname, '..', '.cached_modules')
 
