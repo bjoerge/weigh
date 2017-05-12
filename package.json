@@ -1,7 +1,7 @@
 {
   "name": "weigh",
   "version": "5.0.0",
-  "description": "A command line tool to check the weight (in bytes) of any browser compatible module",
+  "description": "A command line tool to check the bundle size of any browser compatible npm module",
   "main": "./bin/cli.js",
   "scripts": {
     "mocha": "mocha test",

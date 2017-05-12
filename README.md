@@ -1,6 +1,6 @@
 # Weigh [![Build Status](https://travis-ci.org/bjoerge/weigh.svg)](https://travis-ci.org/bjoerge/weigh)
 
-A command line tool to check the approximate weight (in bytes) of any npm module that works in the browser
+A command line tool to check the bundle size of one or more browser compatible npm modules
 
 ## Install
 
@@ -11,7 +11,9 @@ npm i -g weigh
 ## Usage
 
 ```
-Usage: weigh [@scope/]module[@version][/package/relative/module.js] [@scope/]module[@version][/package/relative/module.js ...]
+Usage: weigh [<args>] <module1> [<module2>] [<moduleN>...]
+
+Supports any module identifier on the format [@scope/]package[@version][/module.js]
 
   Options:
     --help, -h          Show this usage information
@@ -41,17 +43,17 @@ Usage: weigh [@scope/]module[@version][/package/relative/module.js] [@scope/]mod
 
     --output -o         Output final result to stdout. You may also want to
                         disable gzipping with --no-gzip
-                        If browserify used for bundling, `fullpaths: true` 
+                        If browserify used for bundling, `fullpaths: true`
                         will be passed as an option to browserify, so that
-                        e.g. `discify` can be used for further bundle 
+                        e.g. `discify` can be used for further bundle
                         inspection
 
-    --version           Output version
+    --version           Output current version
 
     Examples:
       weigh lodash
-      weigh lodash/collection/map
-      weigh lodash@latest/collection/map
+      weigh lodash/map
+      weigh lodash@latest/map
       weigh @myorg/mypkg
       weigh @myorg/mypkg@latest
       weigh @myorg/mypkg/foo/bar.js
@@ -59,7 +61,7 @@ Usage: weigh [@scope/]module[@version][/package/relative/module.js] [@scope/]mod
       weigh @myorg/mypkg@2.1.4/foo/bar.js
       weigh ./path/to/foo/bar.js
       weigh /absolute/path/to/foo/bar.js
-      weigh . (module in cwd)
+      weigh . (resolved module from cwd)
 ```
 
 ## Example:
