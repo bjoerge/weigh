@@ -26,15 +26,6 @@ describe('error handling', function () {
 })
 
 describe('bundling local files', function () {
-  it('fails for missing files', function (done) {
-    exec(BINARY + ' ./doesnotexists.js --__keepcache', function (error, stdout, stderr) {
-      expect(error).toExist()
-      expect(stdout).toNotExist()
-      expect(stderr).toInclude('File not found: ./doesnotexists.js')
-      done()
-    })
-  })
-
   it('actually includes the file in the bundle', function (done) {
     exec(BINARY + ' ./test/fixtures/content.js --__keepcache', function (error, stdout, stderr) {
       expect(error).toNotExist()
