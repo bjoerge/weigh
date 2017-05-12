@@ -39,7 +39,7 @@
     "through2": "^2.0.1",
     "uglify-es": "^3.0.4",
     "uniq": "^1.0.1",
-    "update-notifier": "^1.0.2",
+    "update-notifier": "^2.1.0",
     "xtend": "^4.0.1"
   },
   "devDependencies": {
