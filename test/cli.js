@@ -10,7 +10,7 @@ describe('error handling', function () {
     exec(BINARY + ' ./doesnotexists.js --__keepcache', function (error, stdout, stderr) {
       expect(error).toExist()
       expect(stdout).toNotExist()
-      expect(stderr).toInclude('File not found: ./doesnotexists.js')
+      expect(stderr).toInclude("Error: Cannot find module './doesnotexists.js'")
       done()
     })
   })

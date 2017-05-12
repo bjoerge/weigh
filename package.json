@@ -34,7 +34,7 @@
     "ora": "^0.3.0",
     "pretty-bytes": "^4.0.2",
     "require-package-name": "^2.0.1",
-    "resolve-from": "^2.0.0",
+    "resolve-from": "^3.0.0",
     "rimraf": "^2.5.2",
     "tempfile": "^1.1.1",
     "through2": "^2.0.1",
