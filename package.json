@@ -23,7 +23,7 @@
     "babel-preset-babili": "0.0.12",
     "browser-resolve": "^1.11.1",
     "browserify": "^13.0.0",
-    "butternut": "^0.3.4",
+    "butternut": "^0.3.6",
     "dev-null": "^0.1.1",
     "envify": "^3.4.0",
     "google-closure-compiler": "^20170423.0.0",
