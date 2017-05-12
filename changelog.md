@@ -1,3 +1,16 @@
+## 5.1.0
+- [deps] Update standard + snazzy
+- [deps] Update tempfile 			
+- [deps] Update ora 			
+- [deps] Upgrade update-notifier 			
+- [deps] Upgrade browserify and envify 			
+- [deps] Misc. minor deps updates/cleanup 			
+- [deps] Update uglify-es from 3.0.3 -> 3.0.4 			
+- [deps] Update butternut from ^0.3.4 -> ^0.3.6 			
+- [deps] Update Google Closure Compiler from 20170124.0.0 -> ^20170423.0.0 			
+- [deps] Update babili preset from 0.0.11 -> 0.0.12 			
+- [deps] Upgrade resolve-from to 3.0 and don't throw on unresolved entries 			
+
 ## 5.0.0
 - Support using [Butternut](https://github.com/Rich-Harris/butternut) as minifier.
 - The --output flag will now write the _final_ result to stdout. This means that it by default will output the gzipped bundle to stdout by default.
