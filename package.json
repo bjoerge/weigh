@@ -20,7 +20,7 @@
   "dependencies": {
     "array-groupby": "^0.1.0",
     "babel-core": "^6.18.0",
-    "babel-preset-babili": "0.0.11",
+    "babel-preset-babili": "0.0.12",
     "browser-resolve": "^1.11.1",
     "browserify": "^13.0.0",
     "butternut": "^0.3.4",
