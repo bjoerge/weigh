@@ -31,7 +31,7 @@
     "merge2": "^1.0.2",
     "minimist": "^1.2.0",
     "multistream": "^2.1.0",
-    "ora": "^0.3.0",
+    "ora": "^1.2.0",
     "pretty-bytes": "^4.0.2",
     "resolve-from": "^3.0.0",
     "rimraf": "^2.6.1",
