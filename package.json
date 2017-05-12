@@ -46,8 +46,8 @@
     "chai": "^3.5.0",
     "expect": "^1.14.0",
     "mocha": "^3.3.0",
-    "snazzy": "^5.0.0",
-    "standard": "^8.5.0"
+    "snazzy": "^7.0.0",
+    "standard": "^10.0.2"
   },
   "standard": {
     "ignore": [
